@@ -9,7 +9,7 @@ namespace ConsoleApp
         {
             string str = ClassTest.SayHello();
 
-            Console.WriteLine("Hello World!"+str);
+            Console.WriteLine("Hello World!" + str);
 
         }
     }
