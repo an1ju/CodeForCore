@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CoreLibrary
-{
-
+namespace CoreLibrary {
 
     /* 演示 如下：
         static void Main(string[] args)
@@ -38,21 +36,21 @@ namespace CoreLibrary
     /// 
     /// 关于异常，读不到的节点，就会返回空""，不会报错，请安心使用
     /// </summary>
-    public class Ini
-    {
+    public class Ini {
         // 声明INI文件的写操作函数 WritePrivateProfileString()
-        [System.Runtime.InteropServices.DllImport("kernel32")]
-        private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
+        [System.Runtime.InteropServices.DllImport ("kernel32")]
+        private static extern long WritePrivateProfileString (string section, string key, string val, string filePath);
 
         // 声明INI文件的读操作函数 GetPrivateProfileString()
-        [System.Runtime.InteropServices.DllImport("kernel32")]
-        private static extern int GetPrivateProfileString(string section, string key, string def, System.Text.StringBuilder retVal, int size, string filePath);
+        [System.Runtime.InteropServices.DllImport ("kernel32")]
+        private static extern int GetPrivateProfileString (string section, string key, string def, System.Text.StringBuilder retVal, int size, string filePath);
 
-
+        IniParser.Model.IniData data = null;
         private string sPath = null;
-        public Ini(string path)
-        {
+        public Ini (string path) {
             this.sPath = path;
+            IniParser.FileIniDataParser iniDataParser = new IniParser.FileIniDataParser ();
+            data = iniDataParser.ReadFile (path, Encoding.ASCII);
         }
 
         /// <summary>
@@ -61,10 +59,11 @@ namespace CoreLibrary
         /// <param name="section">配置节</param>
         /// <param name="key">键名</param>
         /// <param name="value">键值</param>
-        public void WriteValue(string section, string key, string value)
-        {
+        public void WriteValue (string section, string key, string value) {
             // section=配置节，key=键名，value=键值，path=路径
-            WritePrivateProfileString(section, key, value, sPath);
+            //WritePrivateProfileString (section, key, value, sPath);
+
+            data[section][key]=value;
         }
 
         /// <summary>
@@ -73,15 +72,15 @@ namespace CoreLibrary
         /// <param name="section">配置节</param>
         /// <param name="key">键名</param>
         /// <returns>键值</returns>
-        public string ReadValue(string section, string key)
-        {
+        public string ReadValue (string section, string key) {
             // 每次从ini中读取多少字节
-            System.Text.StringBuilder temp = new System.Text.StringBuilder(255);
-
+            //System.Text.StringBuilder temp = new System.Text.StringBuilder (255);
             // section=配置节，key=键名，temp=上面，path=路径
-            GetPrivateProfileString(section, key, "", temp, 255, sPath);
+            //GetPrivateProfileString(section, key, "", temp, 255, sPath);
+            //return temp.ToString();
 
-            return temp.ToString();
+            string linuxData = data[section][key];
+            return linuxData;
 
         }
 
