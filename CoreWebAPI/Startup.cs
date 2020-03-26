@@ -36,9 +36,9 @@ namespace CoreWebAPI
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { 
-                    Title = "»ªÈË·çµçWebAPI 1st", 
+                    Title = "åŽäººé£Žç”µWebAPI 1st", 
                     Version = "v1" ,
-                    Description = "Î¢Íø·ÂÕæ¿ØÖÆÌ¨ ASP.NET Core Web API",
+                    Description = "å¾®ç½‘ä»¿çœŸæŽ§åˆ¶å° ASP.NET Core Web API",
                     Contact = new OpenApiContact
                     {
                         Name = "an1ju",
@@ -47,19 +47,19 @@ namespace CoreWebAPI
                     },
                     License = new OpenApiLicense
                     {
-                        Name = "»ªÈË·çµçÄÚ²¿½Ó¿Ú",
+                        Name = "åŽäººé£Žç”µå†…éƒ¨æŽ¥å£",
                         Url = null,
                     }
                 });
 
 
-                //c.DescribeAllEnumsAsStrings();//´Ë·½·¨ÒÑ±»¿ª·¢ÕßÆúÓÃ£¬µ«»¹ÊÇ¿ÉÒÔÓÃ¡£ËûÃÇÍÆ¼öÊ¹ÓÃÏÂÃæµÄÒ»ÐÐxml×¢ÊÍÐÐÐ´µ½ÀàÐÍÖÐ
+                //c.DescribeAllEnumsAsStrings();//ï¿½Ë·ï¿½ï¿½ï¿½ï¿½Ñ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ï¿½Ã¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½xml×¢ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 //[Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter), true)]
 
 
 
-                // Îª Swagger JSON and UIÉèÖÃxmlÎÄµµ×¢ÊÍÂ·¾¶
-                var basePath = Path.GetDirectoryName(typeof(Program).Assembly.Location);//»ñÈ¡Ó¦ÓÃ³ÌÐòËùÔÚÄ¿Â¼£¨¾ø¶Ô£¬²»ÊÜ¹¤×÷Ä¿Â¼Ó°Ïì£¬½¨Òé²ÉÓÃ´Ë·½·¨»ñÈ¡Â·¾¶£©
+                // Îª Swagger JSON and UIï¿½ï¿½ï¿½ï¿½xmlï¿½Äµï¿½×¢ï¿½ï¿½Â·ï¿½ï¿½
+                var basePath = Path.GetDirectoryName(typeof(Program).Assembly.Location);//ï¿½ï¿½È¡Ó¦ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Ô£ï¿½ï¿½ï¿½ï¿½Ü¹ï¿½ï¿½ï¿½Ä¿Â¼Ó°ï¿½ì£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã´Ë·ï¿½ï¿½ï¿½ï¿½ï¿½È¡Â·ï¿½ï¿½ï¿½ï¿½
                 var xmlPath = Path.Combine(basePath, "CoreWebAPI.xml");
                 c.IncludeXmlComments(xmlPath);
 
@@ -84,7 +84,7 @@ namespace CoreWebAPI
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "»ªÈË·çµçWebAPI 1st V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ï¿½ï¿½ï¿½Ë·ï¿½ï¿½WebAPI 1st V1");
                 //c.RoutePrefix = string.Empty;
             });
 
