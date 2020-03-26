@@ -57,8 +57,8 @@ namespace CoreLibrary
         /// <summary>
         /// 通过自身初始化设置，根据创建类型，分配相关路径
         /// 【注意】文件夹规则设计
-        /// UID1336\\1336_20191212131356NEW   这是某个用户的新建试验   也可以用这个复盘
-        /// UID1336\\1336_20191212131356From1222_20191111111213New  这是1336号用户从1222号用户拿取11月11日创建的试验
+        /// UID1336/1336_20191212131356NEW   这是某个用户的新建试验   也可以用这个复盘
+        /// UID1336/1336_20191212131356From1222_20191111111213New  这是1336号用户从1222号用户拿取11月11日创建的试验
         /// </summary>
         /// <param name="self">一条消息</param>
         /// <param name="motherPathName">被查看的目录名称</param>
@@ -75,7 +75,7 @@ namespace CoreLibrary
                             throw new Exception("无此试验模型配置");
 
                         }
-                        self.CopyModel_To_TargetPath = string.Format(@"UID{0}\{0}_{1}New\", self.UID, DateTime.Now.ToString("yyyyMMddHHmmss")); //文件夹copy规则
+                        self.CopyModel_To_TargetPath = string.Format("UID{0}/{0}_{1}New/", self.UID, DateTime.Now.ToString("yyyyMMddHHmmss")); //文件夹copy规则
                         //补充完成：
                         self.SourceModelPath = ini.ReadValue("root", "ModelRootPath") + self.SourceModelPath;
                         self.CopyModel_To_TargetPath = ini.ReadValue("root", "UserRootPath") + self.CopyModel_To_TargetPath;
@@ -124,7 +124,7 @@ namespace CoreLibrary
                             throw new Exception("母文件夹无效");
                         }
                         self.SourceModelPath = JieXiMuLu(motherPathName);//解析目录
-                        self.CopyModel_To_TargetPath = string.Format(@"UID{0}\{0}_{1}_From_{2}\", self.UID, DateTime.Now.ToString("yyyyMMddHHmmss"), self.SourceModelPath.Split('\\')[1]);
+                        self.CopyModel_To_TargetPath = string.Format(@"UID{0}/{0}_{1}_From_{2}/", self.UID, DateTime.Now.ToString("yyyyMMddHHmmss"), self.SourceModelPath.Split('/')[1]);
                         //补充完成：
                         self.SourceModelPath = ini.ReadValue("root", "UserRootPath") + self.SourceModelPath;
                         self.CopyModel_To_TargetPath = ini.ReadValue("root", "UserRootPath") + self.CopyModel_To_TargetPath;
@@ -159,7 +159,7 @@ namespace CoreLibrary
             if (temp.Length >= 2)
             {
                 //合格的文件夹名称
-                r = string.Format(@"UID{0}\{1}\", temp[0], motherPathName);
+                r = string.Format(@"UID{0}/{1}/", temp[0], motherPathName);
             }
             else
             {
@@ -177,8 +177,8 @@ namespace CoreLibrary
 
         /// <summary>
         /// 路径替换规则，
-        /// arguments=-nosplash -nodesktop -sd D:\MyWorkGGTest\zero\MGtcp -r test
-        /// D:\MyWorkGGTest\ + zero\   这是原始路径
+        /// arguments=-nosplash -nodesktop -sd D:/MyWorkGGTest/zero/MGtcp -r test
+        /// D:/MyWorkGGTest/ + zero/   这是原始路径
         /// 新路径可以从上层传递过来
         /// <param name="arguments">参数</param>
         /// <param name="HR_ID"></param>
@@ -202,7 +202,7 @@ namespace CoreLibrary
         {
             FileStream fs = null;
             StreamWriter writer = null;
-            //string path = "D:\\test.txt";
+            //string path = "D://test.txt";
 
             if (!File.Exists(path))
             {
@@ -555,7 +555,7 @@ namespace CoreLibrary
             string sLogPath = managerMessage.CopyModel_To_TargetPath + GetValues("root", "tcpSendLogName");
             string rLogPath = managerMessage.CopyModel_To_TargetPath + GetValues("root", "tcpReceivedLogName");
 
-            //CopyModel_To_TargetPath = "D:\\uuu\\UID0\\0_20191211152935New\\"
+            //CopyModel_To_TargetPath = "D:/uuu/UID0/0_20191211152935New/"
 
             //然后写入文件内容
             try

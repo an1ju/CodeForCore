@@ -195,7 +195,7 @@ namespace CoreLibrary
             string r = "无效操作";
             try
             {
-                string iniPath = System.AppDomain.CurrentDomain.BaseDirectory + "\\HR_Models.ini";
+                string iniPath = System.AppDomain.CurrentDomain.BaseDirectory + "/HR_Models.ini";
                 Ini ini = new Ini(iniPath);
                 string tempPath = ini.ReadValue("root", "UserRootPath") + PublicClassRule.JieXiMuLu(motherPathName);//解析目录
                 //已经有路径了，再查一下该文件夹是否正在使用中
@@ -803,7 +803,7 @@ namespace CoreLibrary
         //{
         //    string r = "无效操作";
 
-        //    string iniPath = System.AppDomain.CurrentDomain.BaseDirectory + "\\HR_Models.ini";
+        //    string iniPath = System.AppDomain.CurrentDomain.BaseDirectory + "/HR_Models.ini";
         //    Ini ini = new Ini(iniPath);
         //    string tempPath = ini.ReadValue("root", "UserRootPath") + PublicClassRule.JieXiMuLu(motherPathName);//解析目录
 
@@ -835,7 +835,7 @@ namespace CoreLibrary
             string r = "无效操作";
             try
             {
-                string iniPath = System.AppDomain.CurrentDomain.BaseDirectory + "\\HR_Models.ini";
+                string iniPath = System.AppDomain.CurrentDomain.BaseDirectory + "/HR_Models.ini";
                 Ini ini = new Ini(iniPath);
                 string tempPath = ini.ReadValue("root", "UserRootPath") + PublicClassRule.JieXiMuLu(motherPathName);//解析目录
                 //已经有路径了，再查一下该文件夹是否正在使用中
