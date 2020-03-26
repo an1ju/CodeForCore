@@ -84,7 +84,7 @@ namespace CoreWebAPI
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "���˷��WebAPI 1st V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "微网仿真控制台 V1");
                 //c.RoutePrefix = string.Empty;
             });
 
