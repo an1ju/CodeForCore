@@ -25,6 +25,8 @@ namespace ConsoleApp
             Ini ini = new Ini("HR_Models.ini");
 
             string strrr=ini.ReadValue("root","tcpSendLogName");
+
+            Service_Main a = new Service_Main();
         }
 
         
