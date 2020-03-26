@@ -14,6 +14,15 @@ namespace CoreWebAPI.Controllers
     [Route("apiV1/[controller]")]
     public class ExperimentController : Controller
     {
+        private readonly Service_Main client;
+
+        public ExperimentController(CoreLibrary.Service_Main service_Main)
+        {
+            this.client = service_Main;
+        }
+
+
+
         // GET <controller>/Get/SayHello
         /// <summary>
         /// 这仅仅是测试API是不是可用CC
@@ -27,7 +36,7 @@ namespace CoreWebAPI.Controllers
             #region MyRegion
             try
             {
-                Service_Main client = new Service_Main();
+                //Service_Main client = new Service_Main();
                 api.Status = "API正常";
                 api.ErrorMsg = "";
                 api.Data = client.SayHello();
@@ -59,7 +68,7 @@ namespace CoreWebAPI.Controllers
             #region MyRegion
             try
             {
-                Service_Main client = new Service_Main();
+                //Service_Main client = new Service_Main();
                 api.Status = "API正常";
                 api.ErrorMsg = "";
                 api.Data = client.GetMessageByID(id);
@@ -86,7 +95,7 @@ namespace CoreWebAPI.Controllers
             #region MyRegion
             try
             {
-                Service_Main client = new Service_Main();
+                //Service_Main client = new Service_Main();
                 api.Status = "API正常";
                 api.ErrorMsg = "";
                 api.Data = client.GetAllMessage();
@@ -116,7 +125,7 @@ namespace CoreWebAPI.Controllers
             #region MyRegion
             try
             {
-                Service_Main client = new Service_Main();
+                //Service_Main client = new Service_Main();
                 api.Status = "API正常";
                 api.ErrorMsg = "";
                 api.Data = client.SetSendDataStr(message, id);
@@ -145,7 +154,7 @@ namespace CoreWebAPI.Controllers
             #region MyRegion
             try
             {
-                Service_Main client = new Service_Main();
+                //Service_Main client = new Service_Main();
                 api.Status = "API正常";
                 api.ErrorMsg = "";
                 api.Data = client.SetStatus(t, id);
@@ -174,7 +183,7 @@ namespace CoreWebAPI.Controllers
             #region MyRegion
             try
             {
-                Service_Main client = new Service_Main();
+                //Service_Main client = new Service_Main();
                 api.Status = "API正常";
                 api.ErrorMsg = "";
                 api.Data = client.DeleteFolder(motherPathName);
@@ -208,7 +217,7 @@ namespace CoreWebAPI.Controllers
             #region MyRegion
             try
             {
-                Service_Main client = new Service_Main();
+                //Service_Main client = new Service_Main();
                 api.Status = "API正常";
                 api.ErrorMsg = "";
                 api.Data = client.GetTag_By_HRID_And_XIEYI(hrID, xieyi);
@@ -243,7 +252,7 @@ namespace CoreWebAPI.Controllers
             #region MyRegion
             try
             {
-                Service_Main client = new Service_Main();
+                //Service_Main client = new Service_Main();
                 api.Status = "API正常";
                 api.ErrorMsg = "";
                 api.Data = client.CreateNew_ShiYan(uid, type, hrID, look_uid, motherPath);
@@ -288,7 +297,7 @@ namespace CoreWebAPI.Controllers
             #region MyRegion
             try
             {
-                Service_Main client = new Service_Main();
+                //Service_Main client = new Service_Main();
                 api.Status = "API正常";
                 api.ErrorMsg = "";
                 api.Data = client.UpLoad_Mfile(id, byteArray, file.FileName);
@@ -318,7 +327,7 @@ namespace CoreWebAPI.Controllers
             #region MyRegion
             try
             {
-                Service_Main client = new Service_Main();
+                //Service_Main client = new Service_Main();
                 api.Status = "API正常";
                 api.ErrorMsg = "";
                 byte[] tempResult = client.DownLoad_Mfile(motherPathName, fileName);
