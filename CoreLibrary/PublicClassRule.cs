@@ -52,7 +52,7 @@ namespace CoreLibrary
         }
 
 
-        static string iniPath = System.AppDomain.CurrentDomain.BaseDirectory + "\\HR_Models.ini";
+        static string iniPath = System.AppDomain.CurrentDomain.BaseDirectory + "HR_Models.ini";
         static Ini ini = new Ini(iniPath);
         /// <summary>
         /// 通过自身初始化设置，根据创建类型，分配相关路径
