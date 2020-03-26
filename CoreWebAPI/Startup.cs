@@ -29,6 +29,9 @@ namespace CoreWebAPI
         {
             services.AddControllers();
 
+            services.AddSingleton<CoreLibrary.Service_Main, CoreLibrary.Service_Main>();
+
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
