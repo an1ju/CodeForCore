@@ -8,7 +8,8 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            Test();
+            //Test();
+            //TestKill(2203);//现在就想实验这个
 
             string str = ClassTest.SayHello();
 
@@ -29,6 +30,10 @@ namespace ConsoleApp
             string strrr=ini.ReadValue("root","tcpSendLogName");
 
             Service_Main a = new Service_Main();
+        }
+
+        private static void TestKill(int pid){
+            CoreLibrary.CMDClass.KillProcess(pid);
         }
 
         
