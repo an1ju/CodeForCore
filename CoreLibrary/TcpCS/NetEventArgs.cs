@@ -5,24 +5,24 @@ using System.Text;
 namespace TcpCSFramework_To_Core
 {
     /// <summary>
-    /// ·şÎñÆ÷³ÌĞòµÄÊÂ¼ş²ÎÊı,°üº¬ÁË¼¤·¢¸ÃÊÂ¼şµÄ»á»°¶ÔÏó
+    /// æœåŠ¡å™¨ç¨‹åºçš„äº‹ä»¶å‚æ•°,åŒ…å«äº†æ¿€å‘è¯¥äº‹ä»¶çš„ä¼šè¯å¯¹è±¡
     /// </summary>
     public class NetEventArgs : EventArgs
     {
-        #region ×Ö¶Î
+        #region å­—æ®µ
 
         /// <summary>
-        /// ¿Í»§¶ËÓë·şÎñÆ÷Ö®¼äµÄ»á»°
+        /// å®¢æˆ·ç«¯ä¸æœåŠ¡å™¨ä¹‹é—´çš„ä¼šè¯
         /// </summary>
         private Session _client;
 
         #endregion
 
-        #region ¹¹Ôìº¯Êı
+        #region æ„é€ å‡½æ•°
         /// <summary>
-        /// ¹¹Ôìº¯Êı
+        /// æ„é€ å‡½æ•°
         /// </summary>
-        /// <param name="client">¿Í»§¶Ë»á»°</param>
+        /// <param name="client">å®¢æˆ·ç«¯ä¼šè¯</param>
         public NetEventArgs(Session client)
         {
             if (null == client)
@@ -34,10 +34,10 @@ namespace TcpCSFramework_To_Core
         }
         #endregion
 
-        #region ÊôĞÔ
+        #region å±æ€§
 
         /// <summary>
-        /// »ñµÃ¼¤·¢¸ÃÊÂ¼şµÄ»á»°¶ÔÏó
+        /// è·å¾—æ¿€å‘è¯¥äº‹ä»¶çš„ä¼šè¯å¯¹è±¡
         /// </summary>
         public Session Client
         {

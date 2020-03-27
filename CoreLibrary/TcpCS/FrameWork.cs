@@ -8,111 +8,111 @@ using System.Collections;
 namespace TcpCSFramework_To_Core
 {
     /// <summary>
-    /// ÍøÂçÍ¨Ñ¶ÊÂ¼şÄ£ĞÍÎ¯ÍĞ
+    /// ç½‘ç»œé€šè®¯äº‹ä»¶æ¨¡å‹å§”æ‰˜
     /// </summary>
     public delegate void NetEvent(object sender, NetEventArgs e);
 
     /// <summary>
-    /// Ìá¹©TCPÁ¬½Ó·şÎñµÄ·şÎñÆ÷Àà
+    /// æä¾›TCPè¿æ¥æœåŠ¡çš„æœåŠ¡å™¨ç±»
     /// </summary>
     public class TcpSvr
     {
-        #region ¶¨Òå×Ö¶Î
+        #region å®šä¹‰å­—æ®µ
 
         /// <summary>
-        /// Ä¬ÈÏµÄ·şÎñÆ÷×î´óÁ¬½Ó¿Í»§¶Ë¶ËÊı¾İ
+        /// é»˜è®¤çš„æœåŠ¡å™¨æœ€å¤§è¿æ¥å®¢æˆ·ç«¯ç«¯æ•°æ®
         /// </summary>
         public const int DefaultMaxClient = 1024;
 
         /// <summary>
-        /// ½ÓÊÕÊı¾İ»º³åÇø´óĞ¡64K
+        /// æ¥æ”¶æ•°æ®ç¼“å†²åŒºå¤§å°64K
         /// </summary>
         public const int DefaultBufferSize = 64 * 1024;
 
         /// <summary>
-        /// ×î´óÊı¾İ±¨ÎÄ´óĞ¡
+        /// æœ€å¤§æ•°æ®æŠ¥æ–‡å¤§å°
         /// </summary>
         public const int MaxDatagramSize = 640 * 1024;
 
         /// <summary>
-        /// ±¨ÎÄ½âÎöÆ÷
+        /// æŠ¥æ–‡è§£æå™¨
         /// </summary>
         private DatagramResolver _resolver;
 
         /// <summary>
-        /// Í¨Ñ¶¸ñÊ½±àÂë½âÂëÆ÷
+        /// é€šè®¯æ ¼å¼ç¼–ç è§£ç å™¨
         /// </summary>
         private Coder _coder;
 
         /// <summary>
-        /// ·şÎñÆ÷³ÌĞòÊ¹ÓÃµÄ¶Ë¿Ú
+        /// æœåŠ¡å™¨ç¨‹åºä½¿ç”¨çš„ç«¯å£
         /// </summary>
         private ushort _port;
 
         /// <summary>
-        /// ·şÎñÆ÷³ÌĞòÔÊĞíµÄ×î´ó¿Í»§¶ËÁ¬½ÓÊı
+        /// æœåŠ¡å™¨ç¨‹åºå…è®¸çš„æœ€å¤§å®¢æˆ·ç«¯è¿æ¥æ•°
         /// </summary>
         private ushort _maxClient;
 
         /// <summary>
-        /// ·şÎñÆ÷µÄÔËĞĞ×´Ì¬
+        /// æœåŠ¡å™¨çš„è¿è¡ŒçŠ¶æ€
         /// </summary>
         private bool _isRun;
 
         /// <summary>
-        /// ½ÓÊÕÊı¾İ»º³åÇø
+        /// æ¥æ”¶æ•°æ®ç¼“å†²åŒº
         /// </summary>
         private byte[] _recvDataBuffer;
 
         /// <summary>
-        /// ·şÎñÆ÷Ê¹ÓÃµÄÒì²½SocketÀà,
+        /// æœåŠ¡å™¨ä½¿ç”¨çš„å¼‚æ­¥Socketç±»,
         /// </summary>
         private Socket _svrSock;
 
         /// <summary>
-        /// ±£´æËùÓĞ¿Í»§¶Ë»á»°µÄ¹şÏ£±í
+        /// ä¿å­˜æ‰€æœ‰å®¢æˆ·ç«¯ä¼šè¯çš„å“ˆå¸Œè¡¨
         /// </summary>
         private Hashtable _sessionTable;
 
         /// <summary>
-        /// µ±Ç°µÄÁ¬½ÓµÄ¿Í»§¶ËÊı
+        /// å½“å‰çš„è¿æ¥çš„å®¢æˆ·ç«¯æ•°
         /// </summary>
         private ushort _clientCount;
 
         #endregion
 
-        #region ÊÂ¼ş¶¨Òå
+        #region äº‹ä»¶å®šä¹‰
 
         /// <summary>
-        /// ¿Í»§¶Ë½¨Á¢Á¬½ÓÊÂ¼ş
+        /// å®¢æˆ·ç«¯å»ºç«‹è¿æ¥äº‹ä»¶
         /// </summary>
         public event NetEvent ClientConn;
 
         /// <summary>
-        /// ¿Í»§¶Ë¹Ø±ÕÊÂ¼ş
+        /// å®¢æˆ·ç«¯å…³é—­äº‹ä»¶
         /// </summary>
         public event NetEvent ClientClose;
 
         /// <summary>
-        /// ·şÎñÆ÷ÒÑ¾­ÂúÊÂ¼ş
+        /// æœåŠ¡å™¨å·²ç»æ»¡äº‹ä»¶
         /// </summary>
         public event NetEvent ServerFull;
 
         /// <summary>
-        /// ·şÎñÆ÷½ÓÊÕµ½Êı¾İÊÂ¼ş
+        /// æœåŠ¡å™¨æ¥æ”¶åˆ°æ•°æ®äº‹ä»¶
         /// </summary>
         public event NetEvent RecvData;
 
         #endregion
 
-        #region ¹¹Ôìº¯Êı
+        #region æ„é€ å‡½æ•°
 
         /// <summary>
-        /// ¹¹Ôìº¯Êı
+        /// æ„é€ å‡½æ•°
         /// </summary>
-        /// <param name="port">·şÎñÆ÷¶Ë¼àÌıµÄ¶Ë¿ÚºÅ</param>
-        /// <param name="maxClient">·şÎñÆ÷ÄÜÈİÄÉ¿Í»§¶ËµÄ×î´óÄÜÁ¦</param>
-        /// <param name="encodingMothord">Í¨Ñ¶µÄ±àÂë·½Ê½</param>
+        /// <param name="port">æœåŠ¡å™¨ç«¯ç›‘å¬çš„ç«¯å£å·</param>
+        /// <param name="maxClient">æœåŠ¡å™¨èƒ½å®¹çº³å®¢æˆ·ç«¯çš„æœ€å¤§èƒ½åŠ›</param>
+        /// <param name="encodingMothord">é€šè®¯çš„ç¼–ç æ–¹å¼</param>
         public TcpSvr(ushort port, ushort maxClient, Coder coder)
         {
             _port = port;
@@ -122,10 +122,10 @@ namespace TcpCSFramework_To_Core
 
 
         /// <summary>
-        /// ¹¹Ôìº¯Êı(Ä¬ÈÏÊ¹ÓÃDefault±àÂë·½Ê½)
+        /// æ„é€ å‡½æ•°(é»˜è®¤ä½¿ç”¨Defaultç¼–ç æ–¹å¼)
         /// </summary>
-        /// <param name="port">·şÎñÆ÷¶Ë¼àÌıµÄ¶Ë¿ÚºÅ</param>
-        /// <param name="maxClient">·şÎñÆ÷ÄÜÈİÄÉ¿Í»§¶ËµÄ×î´óÄÜÁ¦</param>
+        /// <param name="port">æœåŠ¡å™¨ç«¯ç›‘å¬çš„ç«¯å£å·</param>
+        /// <param name="maxClient">æœåŠ¡å™¨èƒ½å®¹çº³å®¢æˆ·ç«¯çš„æœ€å¤§èƒ½åŠ›</param>
         public TcpSvr(ushort port, ushort maxClient)
         {
             _port = port;
@@ -135,9 +135,9 @@ namespace TcpCSFramework_To_Core
 
 
         /// <summary>
-        /// ¹¹Ôìº¯Êı(Ä¬ÈÏÊ¹ÓÃDefault±àÂë·½Ê½ºÍDefaultMaxClient(100)¸ö¿Í»§¶ËµÄÈİÁ¿)
+        /// æ„é€ å‡½æ•°(é»˜è®¤ä½¿ç”¨Defaultç¼–ç æ–¹å¼å’ŒDefaultMaxClient(100)ä¸ªå®¢æˆ·ç«¯çš„å®¹é‡)
         /// </summary>
-        /// <param name="port">·şÎñÆ÷¶Ë¼àÌıµÄ¶Ë¿ÚºÅ</param>
+        /// <param name="port">æœåŠ¡å™¨ç«¯ç›‘å¬çš„ç«¯å£å·</param>
         public TcpSvr(ushort port)
             : this(port, DefaultMaxClient)
         {
@@ -145,10 +145,10 @@ namespace TcpCSFramework_To_Core
 
         #endregion
 
-        #region ÊôĞÔ
+        #region å±æ€§
 
         /// <summary>
-        /// ·şÎñÆ÷µÄSocket¶ÔÏó
+        /// æœåŠ¡å™¨çš„Socketå¯¹è±¡
         /// </summary>
         public Socket ServerSocket
         {
@@ -159,7 +159,7 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// Êı¾İ±¨ÎÄ·ÖÎöÆ÷
+        /// æ•°æ®æŠ¥æ–‡åˆ†æå™¨
         /// </summary>
         public DatagramResolver Resovlver
         {
@@ -174,7 +174,7 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ¿Í»§¶Ë»á»°Êı×é,±£´æËùÓĞµÄ¿Í»§¶Ë,²»ÔÊĞí¶Ô¸ÃÊı×éµÄÄÚÈİ½øĞĞĞŞ¸Ä
+        /// å®¢æˆ·ç«¯ä¼šè¯æ•°ç»„,ä¿å­˜æ‰€æœ‰çš„å®¢æˆ·ç«¯,ä¸å…è®¸å¯¹è¯¥æ•°ç»„çš„å†…å®¹è¿›è¡Œä¿®æ”¹
         /// </summary>
         public Hashtable SessionTable
         {
@@ -185,7 +185,7 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ·şÎñÆ÷¿ÉÒÔÈİÄÉ¿Í»§¶ËµÄ×î´óÄÜÁ¦
+        /// æœåŠ¡å™¨å¯ä»¥å®¹çº³å®¢æˆ·ç«¯çš„æœ€å¤§èƒ½åŠ›
         /// </summary>
         public int Capacity
         {
@@ -196,7 +196,7 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// µ±Ç°µÄ¿Í»§¶ËÁ¬½ÓÊı
+        /// å½“å‰çš„å®¢æˆ·ç«¯è¿æ¥æ•°
         /// </summary>
         public int SessionCount
         {
@@ -207,7 +207,7 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ·şÎñÆ÷ÔËĞĞ×´Ì¬
+        /// æœåŠ¡å™¨è¿è¡ŒçŠ¶æ€
         /// </summary>
         public bool IsRun
         {
@@ -220,16 +220,16 @@ namespace TcpCSFramework_To_Core
 
         #endregion
 
-        #region ¹«ÓĞ·½·¨
+        #region å…¬æœ‰æ–¹æ³•
 
         /// <summary>
-        /// Æô¶¯·şÎñÆ÷³ÌĞò,¿ªÊ¼¼àÌı¿Í»§¶ËÇëÇó
+        /// å¯åŠ¨æœåŠ¡å™¨ç¨‹åº,å¼€å§‹ç›‘å¬å®¢æˆ·ç«¯è¯·æ±‚
         /// </summary>
         public virtual void Start()
         {
             if (_isRun)
             {
-                throw (new ApplicationException("TcpSvrÒÑ¾­ÔÚÔËĞĞ."));
+                throw (new ApplicationException("TcpSvrå·²ç»åœ¨è¿è¡Œ."));
             }
             _sessionTable = new Hashtable(1024);
             _recvDataBuffer = new byte[DefaultBufferSize];
@@ -245,13 +245,13 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// Í£Ö¹·şÎñÆ÷³ÌĞò,ËùÓĞÓë¿Í»§¶ËµÄÁ¬½Ó½«¹Ø±Õ
+        /// åœæ­¢æœåŠ¡å™¨ç¨‹åº,æ‰€æœ‰ä¸å®¢æˆ·ç«¯çš„è¿æ¥å°†å…³é—­
         /// </summary>
         public virtual void Stop()
         {
             if (!_isRun)
             {
-                throw (new ApplicationException("TcpSvrÒÑ¾­Í£Ö¹"));
+                throw (new ApplicationException("TcpSvrå·²ç»åœæ­¢"));
             }
             _isRun = false;
             if (_svrSock.Connected)
@@ -266,7 +266,7 @@ namespace TcpCSFramework_To_Core
 
 
         /// <summary>
-        /// ¹Ø±ÕËùÓĞµÄ¿Í»§¶Ë»á»°,ÓëËùÓĞµÄ¿Í»§¶ËÁ¬½Ó»á¶Ï¿ª
+        /// å…³é—­æ‰€æœ‰çš„å®¢æˆ·ç«¯ä¼šè¯,ä¸æ‰€æœ‰çš„å®¢æˆ·ç«¯è¿æ¥ä¼šæ–­å¼€
         /// </summary>
         public virtual void CloseAllClient()
         {
@@ -280,9 +280,9 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ¹Ø±ÕÒ»¸öÓë¿Í»§¶ËÖ®¼äµÄ»á»°
+        /// å…³é—­ä¸€ä¸ªä¸å®¢æˆ·ç«¯ä¹‹é—´çš„ä¼šè¯
         /// </summary>
-        /// <param name="closeClient">ĞèÒª¹Ø±ÕµÄ¿Í»§¶Ë»á»°¶ÔÏó</param>
+        /// <param name="closeClient">éœ€è¦å…³é—­çš„å®¢æˆ·ç«¯ä¼šè¯å¯¹è±¡</param>
         public virtual void CloseSession(Session closeClient)
         {
             Debug.Assert(closeClient != null);
@@ -294,7 +294,7 @@ namespace TcpCSFramework_To_Core
                 _sessionTable.Remove(closeClient.ID);
                 _clientCount--;
 
-                //¿Í»§¶ËÇ¿ÖÆ¹Ø±ÕÁ´½Ó
+                //å®¢æˆ·ç«¯å¼ºåˆ¶å…³é—­é“¾æ¥
                 if (ClientClose != null)
                 {
                     ClientClose(this, new NetEventArgs(closeClient));
@@ -305,26 +305,26 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ·¢ËÍÊı¾İ
+        /// å‘é€æ•°æ®
         /// </summary>
-        /// <param name="recvDataClient">½ÓÊÕÊı¾İµÄ¿Í»§¶Ë»á»°</param>
-        /// <param name="datagram">Êı¾İ±¨ÎÄ</param>
+        /// <param name="recvDataClient">æ¥æ”¶æ•°æ®çš„å®¢æˆ·ç«¯ä¼šè¯</param>
+        /// <param name="datagram">æ•°æ®æŠ¥æ–‡</param>
         public virtual void Send(Session recvDataClient, string datagram)
         {
-            //»ñµÃÊı¾İ±àÂë
+            //è·å¾—æ•°æ®ç¼–ç 
             byte[] data = _coder.GetEncodingBytes(datagram);
 
             recvDataClient.ClientSocket.BeginSend(data, 0, data.Length, SocketFlags.None,
              new AsyncCallback(SendDataEnd), recvDataClient.ClientSocket);
         }
         /// <summary>
-        /// ·¢ËÍÊı¾İ
+        /// å‘é€æ•°æ®
         /// </summary>
-        /// <param name="recvDataClient">½ÓÊÕÊı¾İµÄ¿Í»§¶Ë»á»°</param>
+        /// <param name="recvDataClient">æ¥æ”¶æ•°æ®çš„å®¢æˆ·ç«¯ä¼šè¯</param>
         /// <param name="data"></param>
         public virtual void Send(Session recvDataClient, byte[] data)
         {
-            //»ñµÃÊı¾İ±àÂë
+            //è·å¾—æ•°æ®ç¼–ç 
             //byte[] data = _coder.GetEncodingBytes(datagram);
 
             recvDataClient.ClientSocket.BeginSend(data, 0, data.Length, SocketFlags.None,
@@ -333,17 +333,17 @@ namespace TcpCSFramework_To_Core
 
         #endregion
 
-        #region ÊÜ±£»¤·½·¨
+        #region å—ä¿æŠ¤æ–¹æ³•
         /// <summary>
-        /// ¹Ø±ÕÒ»¸ö¿Í»§¶ËSocket,Ê×ÏÈĞèÒª¹Ø±ÕSession
+        /// å…³é—­ä¸€ä¸ªå®¢æˆ·ç«¯Socket,é¦–å…ˆéœ€è¦å…³é—­Session
         /// </summary>
-        /// <param name="client">Ä¿±êSocket¶ÔÏó</param>
-        /// <param name="exitType">¿Í»§¶ËÍË³öµÄÀàĞÍ</param>
+        /// <param name="client">ç›®æ ‡Socketå¯¹è±¡</param>
+        /// <param name="exitType">å®¢æˆ·ç«¯é€€å‡ºçš„ç±»å‹</param>
         protected virtual void CloseClient(Socket client, Session.ExitType exitType)
         {
             Debug.Assert(client != null);
 
-            //²éÕÒ¸Ã¿Í»§¶ËÊÇ·ñ´æÔÚ,Èç¹û²»´æÔÚ,Å×³öÒì³£
+            //æŸ¥æ‰¾è¯¥å®¢æˆ·ç«¯æ˜¯å¦å­˜åœ¨,å¦‚æœä¸å­˜åœ¨,æŠ›å‡ºå¼‚å¸¸
             Session closeClient = FindSession(client);
 
             if (closeClient!=null)
@@ -356,29 +356,29 @@ namespace TcpCSFramework_To_Core
                 }
                 else
                 {
-                    throw (new ApplicationException("ĞèÒª¹Ø±ÕµÄSocket¶ÔÏó²»´æÔÚ"));
+                    throw (new ApplicationException("éœ€è¦å…³é—­çš„Socketå¯¹è±¡ä¸å­˜åœ¨"));
                 }
             }
             
         }
 
         /// <summary>
-        /// ¿Í»§¶ËÁ¬½Ó´¦Àíº¯Êı
+        /// å®¢æˆ·ç«¯è¿æ¥å¤„ç†å‡½æ•°
         /// </summary>
-        /// <param name="iar">Óû½¨Á¢·şÎñÆ÷Á¬½ÓµÄSocket¶ÔÏó</param>
+        /// <param name="iar">æ¬²å»ºç«‹æœåŠ¡å™¨è¿æ¥çš„Socketå¯¹è±¡</param>
         protected virtual void AcceptConn(IAsyncResult iar)
         {
-            //Èç¹û·şÎñÆ÷Í£Ö¹ÁË·şÎñ,¾Í²»ÄÜÔÙ½ÓÊÕĞÂµÄ¿Í»§¶Ë
+            //å¦‚æœæœåŠ¡å™¨åœæ­¢äº†æœåŠ¡,å°±ä¸èƒ½å†æ¥æ”¶æ–°çš„å®¢æˆ·ç«¯
             if (!_isRun)
             {
                 return;
             }
 
-            //½ÓÊÜÒ»¸ö¿Í»§¶ËµÄÁ¬½ÓÇëÇó
+            //æ¥å—ä¸€ä¸ªå®¢æˆ·ç«¯çš„è¿æ¥è¯·æ±‚
             Socket oldserver = (Socket)iar.AsyncState;
             Socket client = oldserver.EndAccept(iar);
 
-            //¼ì²éÊÇ·ñ´ïµ½×î´óµÄÔÊĞíµÄ¿Í»§¶ËÊıÄ¿
+            //æ£€æŸ¥æ˜¯å¦è¾¾åˆ°æœ€å¤§çš„å…è®¸çš„å®¢æˆ·ç«¯æ•°ç›®
             if (_clientCount == _maxClient)
             {
                 if (ServerFull != null)
@@ -388,33 +388,33 @@ namespace TcpCSFramework_To_Core
             }
             else
             {
-                //ĞÂ½¨Ò»¸ö¿Í»§¶ËÁ¬½Ó
+                //æ–°å»ºä¸€ä¸ªå®¢æˆ·ç«¯è¿æ¥
                 Session newSession = new Session(client);
                 _sessionTable.Add(newSession.ID, newSession);
 
                 _clientCount++;
 
                 newSession.RecvDataBuffer = new byte[16 * 1024];
-                //¿ªÊ¼½ÓÊÜÀ´×Ô¸Ã¿Í»§¶ËµÄÊı¾İ
+                //å¼€å§‹æ¥å—æ¥è‡ªè¯¥å®¢æˆ·ç«¯çš„æ•°æ®
                 client.BeginReceive(newSession.RecvDataBuffer, 0, newSession.RecvDataBuffer.Length, SocketFlags.None,
                  new AsyncCallback(ReceiveData), newSession);
 
-                //ĞÂµÄ¿Í»§¶ÎÁ¬½Ó,·¢³öÍ¨Öª
+                //æ–°çš„å®¢æˆ·æ®µè¿æ¥,å‘å‡ºé€šçŸ¥
                 if (ClientConn != null)
                 {
                     ClientConn(this, new NetEventArgs(newSession));
                 }
             }
 
-            //¼ÌĞø½ÓÊÜ¿Í»§¶Ë
+            //ç»§ç»­æ¥å—å®¢æˆ·ç«¯
             _svrSock.BeginAccept(new AsyncCallback(AcceptConn), _svrSock);
         }
 
         /// <summary>
-        /// Í¨¹ıSocket¶ÔÏó²éÕÒSession¶ÔÏó
+        /// é€šè¿‡Socketå¯¹è±¡æŸ¥æ‰¾Sessionå¯¹è±¡
         /// </summary>
         /// <param name="client"></param>
-        /// <returns>ÕÒµ½µÄSession¶ÔÏó,Èç¹ûÎªnull,ËµÃ÷²¢²»´æÔÚ¸Ã»á»°</returns>
+        /// <returns>æ‰¾åˆ°çš„Sessionå¯¹è±¡,å¦‚æœä¸ºnull,è¯´æ˜å¹¶ä¸å­˜åœ¨è¯¥ä¼šè¯</returns>
         private Session FindSession(Socket client)
         {
             SessionId id = new SessionId((int)client.Handle);
@@ -422,10 +422,10 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ½ÓÊÜÊı¾İÍê³É´¦Àíº¯Êı£¬Òì²½µÄÌØĞÔ¾ÍÌåÏÖÔÚÕâ¸öº¯ÊıÖĞ£¬
-        /// ÊÕµ½Êı¾İºó£¬»á×Ô¶¯½âÎöÎª×Ö·û´®±¨ÎÄ
+        /// æ¥å—æ•°æ®å®Œæˆå¤„ç†å‡½æ•°ï¼Œå¼‚æ­¥çš„ç‰¹æ€§å°±ä½“ç°åœ¨è¿™ä¸ªå‡½æ•°ä¸­ï¼Œ
+        /// æ”¶åˆ°æ•°æ®åï¼Œä¼šè‡ªåŠ¨è§£æä¸ºå­—ç¬¦ä¸²æŠ¥æ–‡
         /// </summary>
-        /// <param name="iar">Ä¿±ê¿Í»§¶ËSocket</param>
+        /// <param name="iar">ç›®æ ‡å®¢æˆ·ç«¯Socket</param>
         protected virtual void ReceiveData(IAsyncResult iar)
         {
             Session sendDataSession = (Session)iar.AsyncState;
@@ -433,8 +433,8 @@ namespace TcpCSFramework_To_Core
 
             try
             {
-                //Èç¹ûÁ½´Î¿ªÊ¼ÁËÒì²½µÄ½ÓÊÕ,ËùÒÔµ±¿Í»§¶ËÍË³öµÄÊ±ºò
-                //»áÁ½´ÎÖ´ĞĞEndReceive
+                //å¦‚æœä¸¤æ¬¡å¼€å§‹äº†å¼‚æ­¥çš„æ¥æ”¶,æ‰€ä»¥å½“å®¢æˆ·ç«¯é€€å‡ºçš„æ—¶å€™
+                //ä¼šä¸¤æ¬¡æ‰§è¡ŒEndReceive
                 int recv = client.EndReceive(iar);
 
                 if (recv == 0)
@@ -446,7 +446,7 @@ namespace TcpCSFramework_To_Core
                 string receivedData = _coder.GetEncodingString(sendDataSession.RecvDataBuffer, recv);
                 string receivedData2 = _coder.GetEncodingString(_recvDataBuffer, recv);
 
-                //·¢²¼ÊÕµ½Êı¾İµÄÊÂ¼ş
+                //å‘å¸ƒæ”¶åˆ°æ•°æ®çš„äº‹ä»¶
                 //if (RecvData != null)
                 //{
                 //    //Session sendDataSession = FindSession(client);
@@ -471,11 +471,11 @@ namespace TcpCSFramework_To_Core
                 //            //clientSession.ClassName = this.GetClassFullName(ref strDatagram);
                 //            clientSession.Datagram = strDatagram;
 
-                //            //·¢²¼Ò»¸ö±¨ÎÄÏûÏ¢
+                //            //å‘å¸ƒä¸€ä¸ªæŠ¥æ–‡æ¶ˆæ¯
                 //            RecvData(this, new NetEventArgs(clientSession));
                 //        }
 
-                //        //Ê£ÓàµÄ´úÂëÆ¬¶Ï,ÏÂ´Î½ÓÊÕµÄÊ±ºòÊ¹ÓÃ
+                //        //å‰©ä½™çš„ä»£ç ç‰‡æ–­,ä¸‹æ¬¡æ¥æ”¶çš„æ—¶å€™ä½¿ç”¨
                 //        sendDataSession.Datagram = receivedData;
 
                 //        if (sendDataSession.Datagram.Length > MaxDatagramSize)
@@ -504,7 +504,7 @@ namespace TcpCSFramework_To_Core
                     RecvData(this, new NetEventArgs(clientSession));
                 }
 
-                //¼ÌĞø½ÓÊÕÀ´×ÔÀ´¿Í»§¶ËµÄÊı¾İ
+                //ç»§ç»­æ¥æ”¶æ¥è‡ªæ¥å®¢æˆ·ç«¯çš„æ•°æ®
                 client.BeginReceive(sendDataSession.RecvDataBuffer, 0, sendDataSession.RecvDataBuffer.Length, SocketFlags.None,
                  new AsyncCallback(ReceiveData), sendDataSession);
             }
@@ -512,7 +512,7 @@ namespace TcpCSFramework_To_Core
             {
                 if (10054 == ex.ErrorCode)
                 {
-                    //¿Í»§¶ËÇ¿ÖÆ¹Ø±Õ
+                    //å®¢æˆ·ç«¯å¼ºåˆ¶å…³é—­
                     CloseClient(client, Session.ExitType.ExceptionExit);
                 }
 
@@ -528,9 +528,9 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ·¢ËÍÊı¾İÍê³É´¦Àíº¯Êı
+        /// å‘é€æ•°æ®å®Œæˆå¤„ç†å‡½æ•°
         /// </summary>
-        /// <param name="iar">Ä¿±ê¿Í»§¶ËSocket</param>
+        /// <param name="iar">ç›®æ ‡å®¢æˆ·ç«¯Socket</param>
         protected virtual void SendDataEnd(IAsyncResult iar)
         {
             Socket client = (Socket)iar.AsyncState;
@@ -538,7 +538,7 @@ namespace TcpCSFramework_To_Core
             int sent = client.EndSend(iar);
         }
         /// <summary>
-        /// Ğ­Òé½âÎö·½·¨
+        /// åè®®è§£ææ–¹æ³•
         /// </summary>
         /// <param name="Term"></param>
         /// <returns></returns>
@@ -558,66 +558,66 @@ namespace TcpCSFramework_To_Core
 
 
     /// <summary>
-    /// Ìá¹©TcpÍøÂçÁ¬½Ó·şÎñµÄ¿Í»§¶ËÀà
+    /// æä¾›Tcpç½‘ç»œè¿æ¥æœåŠ¡çš„å®¢æˆ·ç«¯ç±»
     /// </summary>
     public class TcpCli
     {
-        #region ×Ö¶Î
+        #region å­—æ®µ
 
         /// <summary>
-        /// ¿Í»§¶ËÓë·şÎñÆ÷Ö®¼äµÄ»á»°Àà
+        /// å®¢æˆ·ç«¯ä¸æœåŠ¡å™¨ä¹‹é—´çš„ä¼šè¯ç±»
         /// </summary>
         private Session _session;
 
         /// <summary>
-        /// ¿Í»§¶ËÊÇ·ñÒÑ¾­Á¬½Ó·şÎñÆ÷
+        /// å®¢æˆ·ç«¯æ˜¯å¦å·²ç»è¿æ¥æœåŠ¡å™¨
         /// </summary>
         private bool _isConnected = false;
 
         /// <summary>
-        /// ½ÓÊÕÊı¾İ»º³åÇø´óĞ¡64K
+        /// æ¥æ”¶æ•°æ®ç¼“å†²åŒºå¤§å°64K
         /// </summary>
         public const int DefaultBufferSize = 1024;
 
         /// <summary>
-        /// ±¨ÎÄ½âÎöÆ÷
+        /// æŠ¥æ–‡è§£æå™¨
         /// </summary>
         private DatagramResolver _resolver;
 
         /// <summary>
-        /// Í¨Ñ¶¸ñÊ½±àÂë½âÂëÆ÷
+        /// é€šè®¯æ ¼å¼ç¼–ç è§£ç å™¨
         /// </summary>
         private Coder _coder;
 
         /// <summary>
-        /// ½ÓÊÕÊı¾İ»º³åÇø
+        /// æ¥æ”¶æ•°æ®ç¼“å†²åŒº
         /// </summary>
         private byte[] _recvDataBuffer = new byte[DefaultBufferSize];
 
         #endregion
 
-        #region ÊÂ¼ş¶¨Òå
+        #region äº‹ä»¶å®šä¹‰
 
         /// <summary>
-        /// ÒÑ¾­Á¬½Ó·şÎñÆ÷ÊÂ¼ş
+        /// å·²ç»è¿æ¥æœåŠ¡å™¨äº‹ä»¶
         /// </summary>
         public event NetEvent ConnectedServer;
 
         /// <summary>
-        /// ½ÓÊÕµ½Êı¾İ±¨ÎÄÊÂ¼ş
+        /// æ¥æ”¶åˆ°æ•°æ®æŠ¥æ–‡äº‹ä»¶
         /// </summary>
         public event NetEvent ReceivedDatagram;
 
         /// <summary>
-        /// Á¬½Ó¶Ï¿ªÊÂ¼ş
+        /// è¿æ¥æ–­å¼€äº‹ä»¶
         /// </summary>
         public event NetEvent DisConnectedServer;
         #endregion
 
-        #region ÊôĞÔ
+        #region å±æ€§
 
         /// <summary>
-        /// ·µ»Ø¿Í»§¶ËÓë·şÎñÆ÷Ö®¼äµÄ»á»°¶ÔÏó
+        /// è¿”å›å®¢æˆ·ç«¯ä¸æœåŠ¡å™¨ä¹‹é—´çš„ä¼šè¯å¯¹è±¡
         /// </summary>
         public Session ClientSession
         {
@@ -628,7 +628,7 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ·µ»Ø¿Í»§¶ËÓë·şÎñÆ÷Ö®¼äµÄÁ¬½Ó×´Ì¬
+        /// è¿”å›å®¢æˆ·ç«¯ä¸æœåŠ¡å™¨ä¹‹é—´çš„è¿æ¥çŠ¶æ€
         /// </summary>
         public bool IsConnected
         {
@@ -639,7 +639,7 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// Êı¾İ±¨ÎÄ·ÖÎöÆ÷
+        /// æ•°æ®æŠ¥æ–‡åˆ†æå™¨
         /// </summary>
         public DatagramResolver Resovlver
         {
@@ -654,7 +654,7 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ±àÂë½âÂëÆ÷
+        /// ç¼–ç è§£ç å™¨
         /// </summary>
         public Coder ServerCoder
         {
@@ -666,10 +666,10 @@ namespace TcpCSFramework_To_Core
 
         #endregion
 
-        #region ¹«ÓĞ·½·¨
+        #region å…¬æœ‰æ–¹æ³•
 
         /// <summary>
-        /// Ä¬ÈÏ¹¹Ôìº¯Êı,Ê¹ÓÃÄ¬ÈÏµÄ±àÂë¸ñÊ½
+        /// é»˜è®¤æ„é€ å‡½æ•°,ä½¿ç”¨é»˜è®¤çš„ç¼–ç æ ¼å¼
         /// </summary>
         public TcpCli()
         {
@@ -677,9 +677,9 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ¹¹Ôìº¯Êı,Ê¹ÓÃÒ»¸öÌØ¶¨µÄ±àÂëÆ÷À´³õÊ¼»¯
+        /// æ„é€ å‡½æ•°,ä½¿ç”¨ä¸€ä¸ªç‰¹å®šçš„ç¼–ç å™¨æ¥åˆå§‹åŒ–
         /// </summary>
-        /// <param name="_coder">±¨ÎÄ±àÂëÆ÷</param>
+        /// <param name="_coder">æŠ¥æ–‡ç¼–ç å™¨</param>
         public TcpCli(Coder coder)
         {
             
@@ -687,10 +687,10 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// Á¬½Ó·şÎñÆ÷
+        /// è¿æ¥æœåŠ¡å™¨
         /// </summary>
-        /// <param name="ip">·şÎñÆ÷IPµØÖ·</param>
-        /// <param name="port">·şÎñÆ÷¶Ë¿Ú</param>
+        /// <param name="ip">æœåŠ¡å™¨IPåœ°å€</param>
+        /// <param name="port">æœåŠ¡å™¨ç«¯å£</param>
         public virtual void Connect(string ip, int port)
         {
             /*
@@ -710,7 +710,7 @@ namespace TcpCSFramework_To_Core
         }
         
         /// <summary>
-        /// ·¢ËÍÊı¾İ±¨ÎÄ
+        /// å‘é€æ•°æ®æŠ¥æ–‡
         /// </summary>
         /// <param name="datagram"></param>
         public virtual void Send(string datagram)
@@ -722,10 +722,10 @@ namespace TcpCSFramework_To_Core
 
             if (!_isConnected)
             {
-                throw (new ApplicationException("Ã»ÓĞÁ¬½Ó·şÎñÆ÷£¬²»ÄÜ·¢ËÍÊı¾İ"));
+                throw (new ApplicationException("æ²¡æœ‰è¿æ¥æœåŠ¡å™¨ï¼Œä¸èƒ½å‘é€æ•°æ®"));
             }
 
-            //»ñµÃ±¨ÎÄµÄ±àÂë×Ö½Ú
+            //è·å¾—æŠ¥æ–‡çš„ç¼–ç å­—èŠ‚
             byte[] data = _coder.GetEncodingBytes(datagram);
 
             //byte[] data = new byte[] { 68, 04, 07, 00, 00, 00 };
@@ -735,7 +735,7 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ·¢ËÍÊı¾İ±¨ÎÄ
+        /// å‘é€æ•°æ®æŠ¥æ–‡
         /// </summary>
         /// <param name="data"></param>
         public virtual void Send(byte[] data)
@@ -744,7 +744,7 @@ namespace TcpCSFramework_To_Core
 
             if (!_isConnected)
             {
-                throw (new ApplicationException("Ã»ÓĞÁ¬½Ó·şÎñÆ÷£¬²»ÄÜ·¢ËÍÊı¾İ"));
+                throw (new ApplicationException("æ²¡æœ‰è¿æ¥æœåŠ¡å™¨ï¼Œä¸èƒ½å‘é€æ•°æ®"));
             }
 
            
@@ -756,7 +756,7 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ¹Ø±ÕÁ¬½Ó
+        /// å…³é—­è¿æ¥
         /// </summary>
         public virtual void Close()
         {
@@ -772,10 +772,10 @@ namespace TcpCSFramework_To_Core
 
         #endregion
 
-        #region ÊÜ±£»¤·½·¨
+        #region å—ä¿æŠ¤æ–¹æ³•
 
         /// <summary>
-        /// Êı¾İ·¢ËÍÍê³É´¦Àíº¯Êı
+        /// æ•°æ®å‘é€å®Œæˆå¤„ç†å‡½æ•°
         /// </summary>
         /// <param name="iar"></param>
         protected virtual void SendDataEnd(IAsyncResult iar)
@@ -786,19 +786,19 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ½¨Á¢TcpÁ¬½Óºó´¦Àí¹ı³Ì
+        /// å»ºç«‹Tcpè¿æ¥åå¤„ç†è¿‡ç¨‹
         /// </summary>
-        /// <param name="iar">Òì²½Socket</param>
+        /// <param name="iar">å¼‚æ­¥Socket</param>
         protected virtual void Connected(IAsyncResult iar)
         {
             Socket socket = (Socket)iar.AsyncState;
             socket.EndConnect(iar);
 
-            //´´½¨ĞÂµÄ»á»°
+            //åˆ›å»ºæ–°çš„ä¼šè¯
             _session = new Session(socket);
             _isConnected = true;
 
-            //´¥·¢Á¬½Ó½¨Á¢ÊÂ¼ş
+            //è§¦å‘è¿æ¥å»ºç«‹äº‹ä»¶
             if (ConnectedServer != null)
             {
                 ConnectedServer(this, new NetEventArgs(_session));
@@ -810,9 +810,9 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// Êı¾İ½ÓÊÕ´¦Àíº¯Êı
+        /// æ•°æ®æ¥æ”¶å¤„ç†å‡½æ•°
         /// </summary>
-        /// <param name="iar">Òì²½Socket</param>
+        /// <param name="iar">å¼‚æ­¥Socket</param>
         protected virtual void RecvData(IAsyncResult iar)
         {
             Socket remote = (Socket)iar.AsyncState;
@@ -835,7 +835,7 @@ namespace TcpCSFramework_To_Core
 
                 string receivedData = _coder.GetEncodingString(_recvDataBuffer, recv);
                 
-                //Í¨¹ıÊÂ¼ş·¢²¼ÊÕµ½µÄ±¨ÎÄ
+                //é€šè¿‡äº‹ä»¶å‘å¸ƒæ”¶åˆ°çš„æŠ¥æ–‡
                 //if (ReceivedDatagram != null)
                 //{
                 //    if (_resolver != null)
@@ -852,11 +852,11 @@ namespace TcpCSFramework_To_Core
                 //            Session clientSession = (Session)copySession.Clone();
                 //            clientSession.Datagram = newDatagram;
 
-                //            //·¢²¼Ò»¸ö±¨ÎÄÏûÏ¢
+                //            //å‘å¸ƒä¸€ä¸ªæŠ¥æ–‡æ¶ˆæ¯
                 //            ReceivedDatagram(this, new NetEventArgs(clientSession));
                 //        }
 
-                //        //Ê£ÓàµÄ´úÂëÆ¬¶Ï,ÏÂ´Î½ÓÊÕµÄÊ±ºòÊ¹ÓÃ
+                //        //å‰©ä½™çš„ä»£ç ç‰‡æ–­,ä¸‹æ¬¡æ¥æ”¶çš„æ—¶å€™ä½¿ç”¨
                 //        _session.Datagram = receivedData;
                 //    }
                 //    else
@@ -871,7 +871,7 @@ namespace TcpCSFramework_To_Core
                 //}//end of if(ReceivedDatagram != null)
                 
                 {
-                    //omega Ìí¼Ó 2013Äê9ÔÂ13ÈÕ11:20:07
+                    //omega æ·»åŠ  2013å¹´9æœˆ13æ—¥11:20:07
                     ICloneable copySession = (ICloneable)_session;
                     Session clientSession = (Session)copySession.Clone();
                     clientSession.Datagram = receivedData;
@@ -881,13 +881,13 @@ namespace TcpCSFramework_To_Core
                 }
 
 
-                //¼ÌĞø½ÓÊÕÊı¾İ
+                //ç»§ç»­æ¥æ”¶æ•°æ®
                 _session.ClientSocket.BeginReceive(_recvDataBuffer, 0, DefaultBufferSize, SocketFlags.None,
                  new AsyncCallback(RecvData), _session.ClientSocket);
             }
             catch (SocketException ex)
             {
-                //¿Í»§¶ËÍË³ö
+                //å®¢æˆ·ç«¯é€€å‡º
                 if (10054 == ex.ErrorCode)
                 {
                     _session.TypeOfExit = Session.ExitType.ExceptionExit;

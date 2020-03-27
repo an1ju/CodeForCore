@@ -7,45 +7,45 @@ using System.Diagnostics;
 namespace TcpCSFramework_To_Core
 {
     /// <summary>
-    /// ¿Í»§¶ËÓë·şÎñÆ÷Ö®¼äµÄ»á»°Àà
+    /// å®¢æˆ·ç«¯ä¸æœåŠ¡å™¨ä¹‹é—´çš„ä¼šè¯ç±»
     /// </summary>
     public class Session : ICloneable
     {
-        #region ×Ö¶Î
+        #region å­—æ®µ
 
         /// <summary>
-        /// »á»°ID
+        /// ä¼šè¯ID
         /// </summary>
         private SessionId _id;
 
         /// <summary>
-        /// ½ÓÊÕÊı¾İ»º³åÇø
+        /// æ¥æ”¶æ•°æ®ç¼“å†²åŒº
         /// </summary>
         private byte[] _recvDataBuffer;
 
         /// <summary>
-        /// ¿Í»§¶Ë·¢ËÍµ½·şÎñÆ÷µÄ±¨ÎÄ
-        /// ×¢Òâ:ÔÚÓĞĞ©Çé¿öÏÂ±¨ÎÄ¿ÉÄÜÖ»ÊÇ±¨ÎÄµÄÆ¬¶Ï¶ø²»ÍêÕû
+        /// å®¢æˆ·ç«¯å‘é€åˆ°æœåŠ¡å™¨çš„æŠ¥æ–‡
+        /// æ³¨æ„:åœ¨æœ‰äº›æƒ…å†µä¸‹æŠ¥æ–‡å¯èƒ½åªæ˜¯æŠ¥æ–‡çš„ç‰‡æ–­è€Œä¸å®Œæ•´
         /// </summary>
         private string _datagram;
 
         /// <summary>
-        /// ¿Í»§¶ËµÄSocket
+        /// å®¢æˆ·ç«¯çš„Socket
         /// </summary>
         private Socket _cliSock;
 
         /// <summary>
-        /// ¿Í»§¶ËµÄÍË³öÀàĞÍ
+        /// å®¢æˆ·ç«¯çš„é€€å‡ºç±»å‹
         /// </summary>
         private ExitType _exitType;
 
         /// <summary>
-        /// »á»°Í¨µÀºÅ
+        /// ä¼šè¯é€šé“å·
         /// </summary>
         private string _channel = "";
 
         /// <summary>
-        /// ÍË³öÀàĞÍÃ¶¾Ù
+        /// é€€å‡ºç±»å‹æšä¸¾
         /// </summary>
         public enum ExitType
         {
@@ -55,10 +55,10 @@ namespace TcpCSFramework_To_Core
 
         #endregion
 
-        #region ÊôĞÔ
+        #region å±æ€§
 
         /// <summary>
-        /// ·µ»Ø»á»°µÄID
+        /// è¿”å›ä¼šè¯çš„ID
         /// </summary>
         public SessionId ID
         {
@@ -73,7 +73,7 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ½ÓÊÕÊı¾İ»º³åÇø 
+        /// æ¥æ”¶æ•°æ®ç¼“å†²åŒº 
         /// </summary>
         public byte[] RecvDataBuffer
         {
@@ -88,7 +88,7 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ´æÈ¡»á»°µÄ±¨ÎÄ
+        /// å­˜å–ä¼šè¯çš„æŠ¥æ–‡
         /// </summary>
         public string Datagram
         {
@@ -103,7 +103,7 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// »ñµÃÓë¿Í»§¶Ë»á»°¹ØÁªµÄSocket¶ÔÏó
+        /// è·å¾—ä¸å®¢æˆ·ç«¯ä¼šè¯å…³è”çš„Socketå¯¹è±¡
         /// </summary>
         public Socket ClientSocket
         {
@@ -116,7 +116,7 @@ namespace TcpCSFramework_To_Core
 
 
         /// <summary>
-        /// ´æÈ¡¿Í»§¶ËµÄÍË³ö·½Ê½
+        /// å­˜å–å®¢æˆ·ç«¯çš„é€€å‡ºæ–¹å¼
         /// </summary>
         public ExitType TypeOfExit
         {
@@ -132,7 +132,7 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// »á»°Ö´ĞĞµÄÍ¨µÀºÅ
+        /// ä¼šè¯æ‰§è¡Œçš„é€šé“å·
         /// </summary>
         public string Channel
         {
@@ -149,10 +149,10 @@ namespace TcpCSFramework_To_Core
         
         #endregion
 
-        #region ·½·¨
+        #region æ–¹æ³•
 
         /// <summary>
-        /// Ê¹ÓÃSocket¶ÔÏóµÄHandleÖµ×÷ÎªHashCode,Ëü¾ßÓĞÁ¼ºÃµÄÏßĞÔÌØÕ÷.
+        /// ä½¿ç”¨Socketå¯¹è±¡çš„Handleå€¼ä½œä¸ºHashCode,å®ƒå…·æœ‰è‰¯å¥½çš„çº¿æ€§ç‰¹å¾.
         /// </summary>
         /// <returns></returns>
         public override int GetHashCode()
@@ -161,7 +161,7 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ·µ»ØÁ½¸öSessionÊÇ·ñ´ú±íÍ¬Ò»¸ö¿Í»§¶Ë
+        /// è¿”å›ä¸¤ä¸ªSessionæ˜¯å¦ä»£è¡¨åŒä¸€ä¸ªå®¢æˆ·ç«¯
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
@@ -173,7 +173,7 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ÖØÔØToString()·½·¨,·µ»ØSession¶ÔÏóµÄÌØÕ÷
+        /// é‡è½½ToString()æ–¹æ³•,è¿”å›Sessionå¯¹è±¡çš„ç‰¹å¾
         /// </summary>
         /// <returns></returns>
         public override string ToString()
@@ -186,9 +186,9 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ¹¹Ôìº¯Êı
+        /// æ„é€ å‡½æ•°
         /// </summary>
-        /// <param name="cliSock">»á»°Ê¹ÓÃµÄSocketÁ¬½Ó</param>
+        /// <param name="cliSock">ä¼šè¯ä½¿ç”¨çš„Socketè¿æ¥</param>
         public Session(Socket cliSock)
         {
             Debug.Assert(cliSock != null);
@@ -199,22 +199,22 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ¹Ø±Õ»á»°
+        /// å…³é—­ä¼šè¯
         /// </summary>
         public void Close()
         {
             Debug.Assert(_cliSock != null);
 
-            //¹Ø±ÕÊı¾İµÄ½ÓÊÜºÍ·¢ËÍ
+            //å…³é—­æ•°æ®çš„æ¥å—å’Œå‘é€
             _cliSock.Shutdown(SocketShutdown.Both);
 
-            //ÇåÀí×ÊÔ´
+            //æ¸…ç†èµ„æº
             _cliSock.Close();
         }
 
         #endregion
 
-        #region ICloneable ³ÉÔ±
+        #region ICloneable æˆå‘˜
 
         object System.ICloneable.Clone()
         {
