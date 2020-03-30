@@ -118,7 +118,10 @@ namespace CoreLibrary
         /// 超时检查，web端
         /// </summary>
         private TimeOutPlay _Web_TimeOut_Test;
-
+        /// <summary>
+        /// M文件必备参数
+        /// </summary>
+        private string _M_Setting_Arguments;
 
         [DataMember]
         public int ID { get => _ID; set => _ID = value; }
@@ -168,6 +171,11 @@ namespace CoreLibrary
         public TimeOutPlay Tcp_TimeOut_Test { get => _Tcp_TimeOut_Test; set => _Tcp_TimeOut_Test = value; }
         [DataMember]
         public TimeOutPlay Web_TimeOut_Test { get => _Web_TimeOut_Test; set => _Web_TimeOut_Test = value; }
+        /// <summary>
+        ///  M文件必备参数
+        /// </summary>
+        [DataMember]
+        public string M_Setting_Arguments { get => _M_Setting_Arguments; set => _M_Setting_Arguments = value; }
     }
 
     /// <summary>

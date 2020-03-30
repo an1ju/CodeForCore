@@ -244,8 +244,8 @@ namespace CoreWebAPI.Controllers
         /// <param name="look_uid">其他用户ID，如果在自己创建或者是复盘自己的试验时，可以写UID，复盘他人试验时，填写其他用户ID</param>
         /// <param name="motherPath">在复盘和查看他人试验时，填写此项。创建新试验时可以写空格</param>
         /// <returns></returns>
-        [HttpGet("CreateNew_ShiYan/{uid}/{type}/{hrID}/{look_uid}/{motherPath}"),HttpPut("CreateNew_ShiYan"), HttpPost("CreateNew_ShiYan")]
-        public API_Response CreateNew_ShiYan(int uid, ShiYanCreateType type, int hrID, int look_uid, string motherPath)
+        [HttpGet("CreateNew_ShiYan/{uid}/{type}/{hrID}/{m_Setting_Arguments}/{look_uid}/{motherPath}"),HttpPut("CreateNew_ShiYan"), HttpPost("CreateNew_ShiYan")]
+        public API_Response CreateNew_ShiYan(int uid, ShiYanCreateType type, int hrID, string m_Setting_Arguments, int look_uid, string motherPath)
         {
             API_Response api = new API_Response();
 
@@ -255,7 +255,7 @@ namespace CoreWebAPI.Controllers
                 //Service_Main client = new Service_Main();
                 api.Status = "API正常";
                 api.ErrorMsg = "";
-                api.Data = client.CreateNew_ShiYan(uid, type, hrID, look_uid, motherPath);
+                api.Data = client.CreateNew_ShiYan(uid, type, hrID, m_Setting_Arguments, look_uid, motherPath);
             }
             catch (Exception ex)
             {

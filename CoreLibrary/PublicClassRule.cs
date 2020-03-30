@@ -198,7 +198,8 @@ namespace CoreLibrary
         /// <param name="path">m文件路径</param>
         /// <param name="HR_Make_ID">华人根试验模型编号</param>
         /// <param name="keyID">这个是重要的ID，是simlink将来要返回给我的ID</param>
-        public static void Edit_M_File(string path, int HR_Make_ID, int keyID)
+        /// <param name="m_Settings_Arguments">M文件配置参数</param>
+        public static void Edit_M_File(string path, int HR_Make_ID, int keyID, string m_Settings_Arguments)
         {
             FileStream fs = null;
             StreamWriter writer = null;
@@ -216,7 +217,7 @@ namespace CoreLibrary
                 string s = File.ReadAllText(path);
 
                 string oldS = GetValues(HR_Make_ID.ToString(), "inputIDValue");
-                string newS = string.Format("input = {0};", keyID);
+                string newS = string.Format("input = {0};{1}", keyID, m_Settings_Arguments);
 
                 s = s.Replace(oldS, newS);
 

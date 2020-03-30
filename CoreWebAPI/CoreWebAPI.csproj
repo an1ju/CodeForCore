@@ -26,7 +26,13 @@
     <None Update="CoreWebAPI.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-        <None Update="HR_Models.ini">
+    <None Update="HR_Models.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="settingsHR\HR_Models_Windows.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="settingsHR\HR_Models_Linxu.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

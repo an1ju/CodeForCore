@@ -248,7 +248,7 @@ namespace CoreLibrary
         /// <param name="look_uid">如果看其他人的试验，这里写别人的uid，默认不写为0</param>
         /// <param name="motherPathName">被查看的用户路径名称  eg.55_20191206144001New</param>
         /// <returns></returns>
-        public ManagerMessage CreateNew_ShiYan(int uid, ShiYanCreateType type, int hrID, int look_uid = 0, string motherPathName = "")
+        public ManagerMessage CreateNew_ShiYan(int uid, ShiYanCreateType type, int hrID, string m_Setting_Arguments, int look_uid = 0, string motherPathName = "")
         {
             //
             ManagerMessage r = new ManagerMessage();
@@ -259,6 +259,7 @@ namespace CoreLibrary
             r.Status = ShiYanStatus.New;
             r.Look_Other_UID = look_uid;
             r.SourceModelPath = motherPathName;
+            r.M_Setting_Arguments = m_Setting_Arguments;
 
             #region 路径处理
             try
@@ -457,7 +458,7 @@ namespace CoreLibrary
 
                 //修改M文件中的  input 的ID  本段属于文件操作，修改.m文件内容
                 string m_path = string.Format("{0}{1}", row.CopyModel_To_TargetPath, PublicClassRule.GetValues(row.HR_Make_ID.ToString(), "mFileName"));
-                PublicClassRule.Edit_M_File(m_path, row.HR_Make_ID, row.ID);
+                PublicClassRule.Edit_M_File(m_path, row.HR_Make_ID, row.ID, row.M_Setting_Arguments);
 
                 MakeRun(arguments, ref row);
                 //等待程序和服务TCP通讯，！！！注意，此时，这个进程不会停止，不会自动关闭。只能等待kill   PID  2019年12月9日14:40:17

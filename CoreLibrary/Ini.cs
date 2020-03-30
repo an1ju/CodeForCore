@@ -74,9 +74,9 @@ namespace CoreLibrary {
         /// <returns>键值</returns>
         public string ReadValue (string section, string key) {
             // 每次从ini中读取多少字节
-            //System.Text.StringBuilder temp = new System.Text.StringBuilder (255);
+            //System.Text.StringBuilder temp = new System.Text.StringBuilder (65535);
             // section=配置节，key=键名，temp=上面，path=路径
-            //GetPrivateProfileString(section, key, "", temp, 255, sPath);
+            //GetPrivateProfileString(section, key, "", temp, 65535, sPath);
             //return temp.ToString();
 
             string linuxData = data[section][key];
