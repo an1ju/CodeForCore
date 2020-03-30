@@ -841,7 +841,7 @@ namespace CoreLibrary
                 string tempPath = ini.ReadValue("root", "UserRootPath") + PublicClassRule.JieXiMuLu(motherPathName);//解析目录
                 //已经有路径了，再查一下该文件夹是否正在使用中
                 //拼接文件完整路径
-                string fullfilename = string.Format(@"{0}{1}", tempPath, fileName);
+                string fullfilename = string.Format("{0}{1}", tempPath, fileName);
                 return FileHelper.FileToByte(fullfilename);
             }
             catch (Exception)
