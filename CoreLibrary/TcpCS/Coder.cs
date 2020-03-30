@@ -5,12 +5,12 @@ using System.Text;
 namespace TcpCSFramework_To_Core
 {
     /// <summary>
-    /// Í¨Ñ¶·şÎñÌá¹©±àÂëºÍ½âÂë·şÎñ.
+    /// é€šè®¯æœåŠ¡æä¾›ç¼–ç å’Œè§£ç æœåŠ¡.
     /// </summary>
     public class Coder
     {
         /// <summary>
-        /// ±àÂë·½Ê½
+        /// ç¼–ç æ–¹å¼
         /// </summary>
         private EncodingMothord _encodingMothord;
 
@@ -33,10 +33,10 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// Í¨Ñ¶Êı¾İ½âÂë
+        /// é€šè®¯æ•°æ®è§£ç 
         /// </summary>
-        /// <param name="dataBytes">ĞèÒª½âÂëµÄÊı¾İ</param>
-        /// <returns>±àÂëºóµÄÊı¾İ</returns>
+        /// <param name="dataBytes">éœ€è¦è§£ç çš„æ•°æ®</param>
+        /// <returns>ç¼–ç åçš„æ•°æ®</returns>
         public virtual string GetEncodingString(byte[] dataBytes, int size)
         {
             switch (_encodingMothord)
@@ -59,17 +59,17 @@ namespace TcpCSFramework_To_Core
                     }
                 default:
                     {
-                        throw (new Exception("Î´¶¨ÒåµÄ±àÂë¸ñÊ½"));
+                        throw (new Exception("æœªå®šä¹‰çš„ç¼–ç æ ¼å¼"));
                     }
             }
 
         }
 
         /// <summary>
-        /// Êı¾İ±àÂë
+        /// æ•°æ®ç¼–ç 
         /// </summary>
-        /// <param name="datagram">ĞèÒª±àÂëµÄ±¨ÎÄ</param>
-        /// <returns>±àÂëºóµÄÊı¾İ</returns>
+        /// <param name="datagram">éœ€è¦ç¼–ç çš„æŠ¥æ–‡</param>
+        /// <returns>ç¼–ç åçš„æ•°æ®</returns>
         public virtual byte[] GetEncodingBytes(string datagram)
         {
             switch (_encodingMothord)
@@ -92,7 +92,7 @@ namespace TcpCSFramework_To_Core
                     }
                 default:
                     {
-                        throw (new Exception("Î´¶¨ÒåµÄ±àÂë¸ñÊ½"));
+                        throw (new Exception("æœªå®šä¹‰çš„ç¼–ç æ ¼å¼"));
                     }
             }
         }

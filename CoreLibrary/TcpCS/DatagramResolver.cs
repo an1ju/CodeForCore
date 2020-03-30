@@ -6,17 +6,17 @@ using System.Text;
 namespace TcpCSFramework_To_Core
 {
     /// <summary>
-    /// Êı¾İ±¨ÎÄ·ÖÎöÆ÷
+    /// æ•°æ®æŠ¥æ–‡åˆ†æå™¨
     /// </summary>
     public class DatagramResolver
     {
         /// <summary>
-        /// ±¨ÎÄ½áÊø±ê¼Ç
+        /// æŠ¥æ–‡ç»“æŸæ ‡è®°
         /// </summary>
         private string endTag;
 
         /// <summary>
-        /// ·µ»Ø½áÊø±ê¼Ç
+        /// è¿”å›ç»“æŸæ ‡è®°
         /// </summary>
         string EndTag
         {
@@ -27,7 +27,7 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ÊÜ±£»¤µÄÄ¬ÈÏ¹¹Ôìº¯Êı,Ìá¹©¸ø¼Ì³ĞÀàÊ¹ÓÃ
+        /// å—ä¿æŠ¤çš„é»˜è®¤æ„é€ å‡½æ•°,æä¾›ç»™ç»§æ‰¿ç±»ä½¿ç”¨
         /// </summary>
         protected DatagramResolver()
         {
@@ -35,35 +35,35 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ¹¹Ôìº¯Êı
+        /// æ„é€ å‡½æ•°
         /// </summary>
-        /// <param name="endTag">±¨ÎÄ½áÊø±ê¼Ç</param>
+        /// <param name="endTag">æŠ¥æ–‡ç»“æŸæ ‡è®°</param>
         public DatagramResolver(string endTag)
         {
             if (endTag == null)
             {
-                throw (new ArgumentNullException("½áÊø±ê¼Ç²»ÄÜÎªnull"));
+                throw (new ArgumentNullException("ç»“æŸæ ‡è®°ä¸èƒ½ä¸ºnull"));
             }
 
             if (endTag == "")
             {
-                throw (new ArgumentException("½áÊø±ê¼Ç·ûºÅ²»ÄÜÎª¿Õ×Ö·û´®"));
+                throw (new ArgumentException("ç»“æŸæ ‡è®°ç¬¦å·ä¸èƒ½ä¸ºç©ºå­—ç¬¦ä¸²"));
             }
 
             this.endTag = endTag;
         }
 
         /// <summary>
-        /// ½âÎö±¨ÎÄ
+        /// è§£ææŠ¥æ–‡
         /// </summary>
-        /// <param name="rawDatagram">Ô­Ê¼Êı¾İ,·µ»ØÎ´Ê¹ÓÃµÄ±¨ÎÄÆ¬¶Ï,
-        /// ¸ÃÆ¬¶Ï»á±£´æÔÚSessionµÄDatagram¶ÔÏóÖĞ</param>
-        /// <returns>±¨ÎÄÊı×é,Ô­Ê¼Êı¾İ¿ÉÄÜ°üº¬¶à¸ö±¨ÎÄ</returns>
+        /// <param name="rawDatagram">åŸå§‹æ•°æ®,è¿”å›æœªä½¿ç”¨çš„æŠ¥æ–‡ç‰‡æ–­,
+        /// è¯¥ç‰‡æ–­ä¼šä¿å­˜åœ¨Sessionçš„Datagramå¯¹è±¡ä¸­</param>
+        /// <returns>æŠ¥æ–‡æ•°ç»„,åŸå§‹æ•°æ®å¯èƒ½åŒ…å«å¤šä¸ªæŠ¥æ–‡</returns>
         public virtual string[] Resolve(ref string rawDatagram)
         {
             ArrayList datagrams = new ArrayList();
 
-            //Ä©Î²±ê¼ÇÎ»ÖÃË÷Òı
+            //æœ«å°¾æ ‡è®°ä½ç½®ç´¢å¼•
             int tagIndex = -1;
 
             while (true)
@@ -76,7 +76,7 @@ namespace TcpCSFramework_To_Core
                 }
                 else
                 {
-                    //°´ÕÕÄ©Î²±ê¼Ç°Ñ×Ö·û´®·ÖÎª×óÓÒÁ½¸ö²¿·Ö
+                    //æŒ‰ç…§æœ«å°¾æ ‡è®°æŠŠå­—ç¬¦ä¸²åˆ†ä¸ºå·¦å³ä¸¤ä¸ªéƒ¨åˆ†
                     string newDatagram = rawDatagram.Substring(0, tagIndex + endTag.Length);
 
                     datagrams.Add(newDatagram);
@@ -91,7 +91,7 @@ namespace TcpCSFramework_To_Core
                     rawDatagram = rawDatagram.Substring(tagIndex + endTag.Length,
                         rawDatagram.Length - newDatagram.Length);
 
-                    //´Ó¿ªÊ¼Î»ÖÃ¿ªÊ¼²éÕÒ
+                    //ä»å¼€å§‹ä½ç½®å¼€å§‹æŸ¥æ‰¾
                     tagIndex = 0;
                 }
             }

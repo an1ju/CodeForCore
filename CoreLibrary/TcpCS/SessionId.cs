@@ -5,17 +5,17 @@ using System.Text;
 namespace TcpCSFramework_To_Core
 {
     /// <summary>
-    /// Î¨Ò»µÄ±êÖ¾Ò»¸öSession, ¸¨ÖúSession¶ÔÏóÔÚHash±íÖĞÍê³ÉÌØ¶¨¹¦ÄÜ
+    /// å”¯ä¸€çš„æ ‡å¿—ä¸€ä¸ªSession, è¾…åŠ©Sessionå¯¹è±¡åœ¨Hashè¡¨ä¸­å®Œæˆç‰¹å®šåŠŸèƒ½
     /// </summary>
     public class SessionId
     {
         /// <summary>
-        /// ÓëSession¶ÔÏóµÄSocket¶ÔÏóµÄHandleÖµÏàÍ¬,±ØĞëÓÃÕâ¸öÖµÀ´³õÊ¼»¯Ëü
+        /// ä¸Sessionå¯¹è±¡çš„Socketå¯¹è±¡çš„Handleå€¼ç›¸åŒ,å¿…é¡»ç”¨è¿™ä¸ªå€¼æ¥åˆå§‹åŒ–å®ƒ
         /// </summary>
         private int _id;
 
         /// <summary>
-        /// ·µ»ØIDÖµ
+        /// è¿”å›IDå€¼
         /// </summary>
         public int ID
         {
@@ -26,16 +26,16 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ¹¹Ôìº¯Êı
+        /// æ„é€ å‡½æ•°
         /// </summary>
-        /// <param name="id">SocketµÄHandleÖµ</param>
+        /// <param name="id">Socketçš„Handleå€¼</param>
         public SessionId(int id)
         {
             _id = id;
         }
 
         /// <summary>
-        /// ÖØÔØ.ÎªÁË·ûºÏHashtable¼üÖµÌØÕ÷
+        /// é‡è½½.ä¸ºäº†ç¬¦åˆHashtableé”®å€¼ç‰¹å¾
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
@@ -58,7 +58,7 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ÖØÔØ.ÎªÁË·ûºÏHashtable¼üÖµÌØÕ÷
+        /// é‡è½½.ä¸ºäº†ç¬¦åˆHashtableé”®å€¼ç‰¹å¾
         /// </summary>
         /// <returns></returns>
         public override int GetHashCode()
@@ -67,7 +67,7 @@ namespace TcpCSFramework_To_Core
         }
 
         /// <summary>
-        /// ÖØÔØ,ÎªÁË·½±ãÏÔÊ¾Êä³ö
+        /// é‡è½½,ä¸ºäº†æ–¹ä¾¿æ˜¾ç¤ºè¾“å‡º
         /// </summary>
         /// <returns></returns>
         public override string ToString()
