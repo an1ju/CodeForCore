@@ -771,7 +771,7 @@ namespace CoreLibrary
             if (row.Count > 0)
             {
                 //有此试验，然后保存在该试验路径下
-                string path = string.Format(@"{0}/{1}", row[0].CopyModel_To_TargetPath/*,DateTime.Now.ToString("yyyyMMddHHmmss")*/, fileName);
+                string path = string.Format("{0}/{1}", row[0].CopyModel_To_TargetPath/*,DateTime.Now.ToString("yyyyMMddHHmmss")*/, fileName);
 
                 bool r2 = FileHelper.ByteToFile(data, path);
                 if (r2)
