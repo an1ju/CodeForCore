@@ -21,4 +21,7 @@ sudo mount -o loop R2018b_glnxa64_dvd2.iso ~/matlab
 在windows framework中，双引号被自动屏蔽了。
 而在.net Core中，字符串中的双引号是被认知的。
 
+2020年03月31日08:17:11
+原因找到了，是调用的方法不同，↑↑↑↑↑↑
+
 
