@@ -229,7 +229,7 @@ namespace CoreLibrary
                 writer = new StreamWriter(fs);
                 fs.Write(mybyte, 0, mybyte.Length);
                 //writer.WriteLine("测试文本");
-                Console.WriteLine("像文件中写入文本数据流");
+                Console.WriteLine("向文件中写入文本数据流");
                 writer.Flush();
                 writer.Close();
             }
