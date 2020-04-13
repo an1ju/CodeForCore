@@ -78,19 +78,16 @@ namespace CoreLibrary
 
         public static void KillProcess(int pid)
         {
-            string cmdStr = string.Format("taskkill /pid  {0} /f &exit", pid);
-            using (Process process = new Process())
-            {
-                process.StartInfo.FileName = "cmd.exe";
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.RedirectStandardInput = true;
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.RedirectStandardError = true;
-                process.StartInfo.CreateNoWindow = true;
-                process.Start();
-                process.StandardInput.WriteLine(cmdStr);
-                process.StandardInput.AutoFlush = true;
-            }
+            
+                System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo("kill", pid.ToString());
+                startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+                System.Diagnostics.Process myprocess = new System.Diagnostics.Process();
+                myprocess.StartInfo = startInfo;
+                myprocess.StartInfo.UseShellExecute = false;
+                myprocess.StartInfo.CreateNoWindow = true;
+                myprocess.StartInfo.RedirectStandardOutput = true;
+
+                myprocess.Start();
         }
 
 
