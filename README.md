@@ -15,3 +15,13 @@ sudo sudo ~/matlab/install        //执行安装程序
 sudo mount -o loop R2018b_glnxa64_dvd2.iso ~/matlab
 
 我下载的MATLAB2018b可能是光盘有问题。
+
+2020年03月30日15:51:01
+遇到一个很奇怪的事情：关于 string.replace(a,b);
+在windows framework中，双引号被自动屏蔽了。
+而在.net Core中，字符串中的双引号是被认知的。
+
+2020年03月31日08:17:11
+原因找到了，是调用的方法不同，↑↑↑↑↑↑
+
+
