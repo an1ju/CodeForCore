@@ -83,6 +83,28 @@ namespace CoreWebAPI.Controllers
 
             return api;
         }
+
+        [HttpGet("GetMessageS_Single_ByID/{id}")]
+        public API_Response GetMessageS_Single_ByID(int id)
+        {
+            API_Response api = new API_Response();
+            #region MyRegion
+            try
+            {
+                //Service_MainClient client = new Service_MainClient();
+                api.Status = "API正常";
+                api.ErrorMsg = "";
+                api.Data = client.GetMessageS_Sigle_ByID(id);
+            }
+            catch (Exception ex)
+            {
+                api.Status = "API异常";
+                api.ErrorMsg = ex.Message;
+                api.Data = null;
+            }
+            #endregion
+            return api;
+        }
         /// <summary>
         /// 查询全部正处于管理状态的试验
         /// </summary>
