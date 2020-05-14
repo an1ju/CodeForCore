@@ -18,6 +18,11 @@ namespace CoreLibrary
         private List<ManagerMessage> YingHeXinList = null;
 
         /// <summary>
+        /// 为了单一模型数据
+        /// </summary>
+        private List<SingleID_List> Single_List_By_ID = null;
+
+        /// <summary>
         /// TCP通讯硬核部分。
         /// 这是与simlink通讯的硬核了。
         /// 2019年12月5日15:27:21
@@ -43,6 +48,7 @@ namespace CoreLibrary
         public Service_Main()
         {
             YingHeXinList = new List<ManagerMessage>();
+            Single_List_By_ID = new List<SingleID_List>();
 
             svr = new TcpSvr((ushort)TCPport, (ushort)TCPConnectMax, new Coder(Coder.EncodingMothord.UTF8));
 
@@ -103,6 +109,33 @@ namespace CoreLibrary
                 {
                     r = YingHeXinList[i];
                     YingHeXinList[i].Web_Heart++;//web心跳
+                    break;
+                }
+            }
+            return r;
+        }
+
+        public SingleID_List GetMessageS_Sigle_ByID(int id)
+        {
+            SingleID_List r = null;
+            for (int i = 0; i < Single_List_By_ID.Count; i++)
+            {
+                if (Single_List_By_ID[i].ID == id)
+                {
+                    r = Single_List_By_ID[i];
+
+
+                    #region //补充心跳
+                    for (int iC = 0; iC < YingHeXinList.Count; iC++)
+                    {
+                        if (YingHeXinList[iC].ID == id)
+                        {
+                            YingHeXinList[iC].Web_Heart++;//web心跳
+                            break;
+                        }
+                    }
+                    #endregion
+
                     break;
                 }
             }
@@ -390,6 +423,8 @@ namespace CoreLibrary
                         {
                             #region MyRegion
                             CMDClass.KillProcess(YingHeXinList[i].PID);//此处注意，可能要改为sleep或多线程。
+
+                            MakeSingleData(false, YingHeXinList[i].ID, "", "t0");
                             YingHeXinList.RemoveAt(i);
                             ThisTimeChanged = true;
                             #endregion
@@ -596,6 +631,12 @@ namespace CoreLibrary
                 row[0].ReceivedData = rDataStr;
                 row[0].ReceivedTotalCount++;
 
+                #region //补充：为了单一模型
+                MakeSingleData(true, id, rDataStr, row[0].TCP_GoOn_Time);
+
+
+                #endregion
+
                 //下面该回数据了，有来不往非君子。
 
                 //首先验证一下要发送的数据 2019年12月10日11:42:46
@@ -759,6 +800,78 @@ namespace CoreLibrary
 
         #endregion
 
+        #region 为了单一模型
+
+        /// <summary>
+        /// 单一模型制作
+        /// 参数true是添加数据，false为清除数据
+        /// 2020年5月14日11:17:41
+        /// </summary>
+        /// <param name="InOrOut">true In false out</param>
+        /// <param name="id">id</param>
+        /// <param name="message">数据</param>
+        /// <param name="time"></param>
+        private void MakeSingleData(bool InOrOut, int id, string message, string time)
+        {
+            //先找
+            bool canfind = false;
+            int index = -1;
+            for (int i = 0; i < Single_List_By_ID.Count; i++)
+            {
+                if (Single_List_By_ID[i].ID == id)
+                {
+                    canfind = true;
+                    index = i;
+                    break;
+                }
+            }
+
+            //再看是进还是出
+            if (InOrOut)
+            {
+                //入
+                if (canfind)
+                {
+                    //原来就有
+                    Single_List_By_ID[index].ReceivedDataList.Add(message);
+                    Single_List_By_ID[index].Times.Add(time);
+
+                    //多余1000行去除
+                    if (Single_List_By_ID[index].ReceivedDataList.Count > 1000)
+                    {
+                        Single_List_By_ID[index].ReceivedDataList.RemoveAt(0);
+                    }
+                }
+                else
+                {
+                    //原来没有，需要创建
+                    SingleID_List temp = new SingleID_List();
+                    temp.ID = id;
+                    temp.ReceivedDataList.Add(message);
+                    temp.Times.Add(time);
+                    Single_List_By_ID.Add(temp);
+                }
+
+
+
+            }
+            else
+            {
+                //出
+                if (canfind)
+                {
+                    Single_List_By_ID.RemoveAt(index);
+                }
+                else
+                {
+                    //原先就没有，无需操作。
+                }
+            }
+
+
+        }
+
+        #endregion
 
         #region 上传文件
 

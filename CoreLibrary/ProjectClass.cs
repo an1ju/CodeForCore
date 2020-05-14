@@ -179,6 +179,31 @@ namespace CoreLibrary
     }
 
     /// <summary>
+    /// 单一试验数据组
+    /// 为了波形！！2020年5月14日11:07:51
+    /// </summary>
+    [DataContract]
+    public class SingleID_List
+    {
+        private int _ID;
+        private List<string> _Times;
+        private List<string> _ReceivedDataList;
+
+        public SingleID_List()
+        {
+            _ReceivedDataList = new List<string>();
+            _Times = new List<string>();
+        }
+
+        [DataMember]
+        public int ID { get => _ID; set => _ID = value; }
+        [DataMember]
+        public List<string> Times { get => _Times; set => _Times = value; }
+        [DataMember]
+        public List<string> ReceivedDataList { get => _ReceivedDataList; set => _ReceivedDataList = value; }
+    }
+
+    /// <summary>
     /// 超时模型
     /// </summary>
     [DataContract]
