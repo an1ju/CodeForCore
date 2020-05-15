@@ -217,6 +217,14 @@ namespace CoreLibrary
                 string s = File.ReadAllText(path);
 
                 string oldS = GetValues(HR_Make_ID.ToString(), "inputIDValue");
+
+                //特殊机制补丁，防止字符串左右有双引号
+                string[] yinhao = oldS.Split('"');
+                if (yinhao.Length > 0)
+                {
+                    oldS = yinhao[1];
+                }
+
                 string newS = string.Format("input = {0};{1}", keyID, m_Settings_Arguments);
 
                 s = s.Replace(oldS, newS);
